@@ -1,0 +1,230 @@
+{
+  "name": "vscode-awk",
+  "displayName": "awk",
+  "description": "Language support for AWK — syntax highlighting (keywords, built-in variables and functions, field refs, regex literals), filetype detection, LSP (awkrs --lsp), running, and full debugging (breakpoints, stepping, variables) via awkrs --dap.",
+  "version": "0.1.0",
+  "publisher": "MenkeTechnologies",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Debuggers"
+  ],
+  "keywords": [
+    "awk",
+    "awkrs",
+    "gawk",
+    "mawk",
+    "lsp",
+    "debug"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MenkeTechnologies/vscode-awk.git"
+  },
+  "homepage": "https://menketechnologies.github.io/vscode-awk/",
+  "bugs": {
+    "url": "https://github.com/MenkeTechnologies/vscode-awk/issues"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:awk",
+    "onDebugResolve:awk",
+    "onDebugDynamicConfigurations:awk"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "awk",
+        "aliases": [
+          "AWK",
+          "awk"
+        ],
+        "extensions": [
+          ".awk"
+        ],
+        "filenames": [],
+        "firstLine": "^#!.*\\bawk\\b",
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "awk",
+        "scopeName": "source.awk",
+        "path": "./syntaxes/awk.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "awk",
+      "properties": {
+        "awk.path": {
+          "type": "string",
+          "default": "awkrs",
+          "description": "Path to the awkrs executable used for the language server, running, and debugging."
+        },
+        "awk.lsp.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the awk language server (awkrs --lsp). Disable to use syntax highlighting only."
+        },
+        "awk.lsp.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "--lsp"
+          ],
+          "description": "Arguments passed to the awkrs executable to start the language server."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "awk.run",
+        "title": "Run File",
+        "category": "AWK",
+        "icon": "$(play)"
+      },
+      {
+        "command": "awk.debug",
+        "title": "Debug File",
+        "category": "AWK",
+        "icon": "$(debug-alt)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "awk.run",
+        "key": "ctrl+f5",
+        "mac": "ctrl+f5",
+        "when": "editorLangId == awk"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "awk.run",
+          "when": "resourceLangId == awk",
+          "group": "navigation@1"
+        },
+        {
+          "command": "awk.debug",
+          "when": "resourceLangId == awk",
+          "group": "navigation@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "awk.run",
+          "when": "editorLangId == awk"
+        },
+        {
+          "command": "awk.debug",
+          "when": "editorLangId == awk"
+        }
+      ]
+    },
+    "breakpoints": [
+      {
+        "language": "awk"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "awk",
+        "label": "AWK",
+        "languages": [
+          "awk"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Absolute path to the .awk script to debug.",
+                "default": "${file}"
+              },
+              "args": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Command-line arguments passed to the script (input files, etc.).",
+                "default": []
+              },
+              "cwd": {
+                "type": "string",
+                "description": "Working directory for the debugged program.",
+                "default": "${workspaceFolder}"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Break on the first line of the program.",
+                "default": false
+              },
+              "noDebug": {
+                "type": "boolean",
+                "description": "Run without the debugger (ignore breakpoints).",
+                "default": false
+              },
+              "interpreterArgs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Extra arguments passed to the awkrs interpreter itself.",
+                "default": []
+              },
+              "awkPath": {
+                "type": "string",
+                "description": "Override the awkrs executable for this debug session. Defaults to the resolved \"awk.path\"."
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "awk",
+            "request": "launch",
+            "name": "AWK: Debug Current File",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "AWK: Debug Current File",
+            "description": "Debug the active .awk file with awkrs --dap",
+            "body": {
+              "type": "awk",
+              "request": "launch",
+              "name": "AWK: Debug Current File",
+              "program": "^\"\\${file}\"",
+              "cwd": "^\"\\${workspaceFolder}\"",
+              "stopOnEntry": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "echo no build step"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.1",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.1.0"
+  }
+}
