@@ -16,7 +16,7 @@
 
 > *"Open a `.awk`. Patterns, actions, fields, and regex light up — and `awkrs` jacks in."*
 
-VS Code / VSCodium support for **AWK** — driven by **[awkrs](https://github.com/MenkeTechnologies)**, a pattern/action engine written in Rust (POSIX / gawk / mawk-style union CLI). A standalone TextMate grammar, filetype detection, language-server integration via `awkrs --lsp`, one-key running, and full debugging (breakpoints, stepping, variables) via `awkrs --dap`.
+VS Code / VSCodium support for **AWK** — driven by **[awkrs](https://github.com/MenkeTechnologies/awkrs)**, a pattern/action engine written in Rust (POSIX / gawk / mawk-style union CLI). A standalone TextMate grammar, filetype detection, language-server integration via `awkrs --lsp`, one-key running, and full debugging (breakpoints, stepping, variables) via `awkrs --dap`.
 
 ### [`Read the Docs`](https://menketechnologies.github.io/vscode-awk/) &middot; [`Engineering Report`](https://menketechnologies.github.io/vscode-awk/report.html) · [`vscode-stryke`](https://github.com/MenkeTechnologies/vscode-stryke) · [`zshrs`](https://github.com/MenkeTechnologies/zshrs)
 
@@ -53,7 +53,7 @@ Created by **[MenkeTechnologies](https://github.com/MenkeTechnologies)**.
 | Config | `awk.path`, `awk.lsp.enabled`, `awk.lsp.args` |
 
 > The language server needs the `awkrs` binary. The extension resolves it from
-> `$PATH` plus the common install locations (`/opt/homebrew/bin`, `/usr/local/bin`,
+> `$PATH` plus the common install locations (`/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`,
 > `~/.cargo/bin`, `~/.local/bin`) — so it works even when the editor is launched
 > from the macOS Dock / Finder, which doesn't inherit your shell `$PATH`. Install
 > with `cargo install awkrs`. If it lives elsewhere, set `awk.path` to the
